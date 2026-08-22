@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jaganaraayan M — AI/ML Engineer, Cybersecurity Focus</title>
+<meta name="description" content="Jaganaraayan M — AI/ML Engineer building at the intersection of machine learning and cybersecurity.">
+
+<!-- Open Graph / Social Media Meta Tags -->
+<meta property="og:title" content="Jaganaraayan M — AI/ML Engineer, Cybersecurity Focus">
+<meta property="og:description" content="AI/ML Engineer building systems at the intersection of machine learning and cybersecurity.">
+<meta property="og:type" content="website">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #0A0E17;
+    --surface: #10151F;
+    --surface-2: #141A26;
+    --border: #202836;
+    --text: #E8EEF4;
+    --muted: #8A97A8;
+    --accent: #5B8DEF;   /* packet blue — scan / signal */
+    --accent-dim: #5B8DEF33;
+    --amber: #F2A93B;    /* watch / flagged */
+    --danger: #FF5C5C;   /* blocked / threat */
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .font-display{ font-family:'Space Grotesk', 'Inter', sans-serif; }
+  .font-mono{ font-family:'JetBrains Mono', monospace; }
+
+  ::selection{ background:var(--accent); color:#04060a; }
+
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+    border-radius:2px;
+  }
+
+  .grain{
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(91,141,239,0.10), transparent 40%),
+      radial-gradient(circle at 85% 0%, rgba(242,169,59,0.06), transparent 35%);
+  }
+
+  .hairline{ border-color:var(--border); }
+
+  .chip{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.02em;
+    border:1px solid var(--border);
+    background:var(--surface-2);
+    color:var(--muted);
+    padding:5px 10px;
+    border-radius:6px;
+    white-space:nowrap;
+  }
+
+  .btn-primary{
+    background:var(--accent);
+    color:#06090f;
+    font-weight:600;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 24px -8px var(--accent-dim); }
+
+  .btn-ghost{
+    border:1px solid var(--border);
+    color:var(--text);
+    transition:border-color .15s ease, background .15s ease, transform .15s ease;
+  }
+  .btn-ghost:hover{ border-color:var(--accent); background:var(--surface-2); transform:translateY(-1px); }
+
+  /* ---- terminal / scan log, the signature element ---- */
+  .scan-window{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 40px 80px -40px rgba(0,0,0,0.6);
+  }
+  .scan-titlebar{
+    display:flex; align-items:center; gap:8px;
+    padding:10px 14px;
+    border-bottom:1px solid var(--border);
+    background:var(--surface-2);
+  }
+  .dot{ width:9px; height:9px; border-radius:50%; }
+  .scan-body{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    line-height:1.9;
+    padding:16px;
+    min-height:220px;
+  }
+  .scan-line{ display:flex; gap:10px; opacity:0; transform:translateY(4px); animation:lineIn .4s ease forwards; white-space:pre-wrap; word-break:break-word; }
+  @keyframes lineIn{ to{ opacity:1; transform:translateY(0); } }
+  .tag-ok{ color:var(--accent); }
+  .tag-block{ color:var(--danger); }
+  .tag-watch{ color:var(--amber); }
+  .caret{ display:inline-block; width:7px; height:14px; background:var(--accent); animation:blink 1s steps(1) infinite; vertical-align:-2px; }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  /* reveal on scroll */
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .reveal{ opacity:1; transform:none; transition:none; }
+    .scan-line{ animation:none; opacity:1; transform:none; }
+    .caret{ animation:none; }
+  }
+
+  .section-eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+  }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .card:hover{ border-color:#2C3A50; transform:translateY(-3px); }
+
+  .nav-blur{
+    backdrop-filter: blur(10px);
+    background:rgba(10,14,23,0.75);
+  }
+
+  .link-underline{
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size .25s ease;
+  }
+  .link-underline:hover{ background-size: 100% 1px; }
+
+  /* ---- custom circular cursor ---- */
+  .cursor-dot, .cursor-ring{
+    position:fixed;
+    top:0; left:0;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:9999;
+    transform:translate(-50%,-50%);
+  }
+  .cursor-dot{
+    width:6px; height:6px;
+    background:var(--accent);
+  }
+  .cursor-ring{
+    width:34px; height:34px;
+    border:1px solid var(--accent);
+    transition:width .18s ease, height .18s ease, border-color .18s ease, background .18s ease, opacity .18s ease;
+  }
+  .cursor-ring.is-active{
+    width:54px; height:54px;
+    background:var(--accent-dim);
+    border-color:var(--accent);
+  }
+  body, a, button, [tabindex]{ cursor:none; }
+
+  @media (hover:none), (pointer:coarse){
+    .cursor-dot, .cursor-ring{ display:none; }
+    body, a, button, [tabindex]{ cursor:auto; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .cursor-ring{ transition:none; }
+  }
+
+  /* ---- status indicator, contact section ---- */
+  .status-dot{
+    position:relative;
+    width:8px; height:8px;
+    border-radius:50%;
+    background:var(--accent);
+  }
+  .status-dot::after{
+    content:'';
+    position:absolute;
+    inset:-5px;
+    border-radius:50%;
+    border:1px solid var(--accent);
+    animation:statusPulse 2s ease-out infinite;
+  }
+  @keyframes statusPulse{
+    0%{ transform:scale(0.5); opacity:0.9; }
+    100%{ transform:scale(2.1); opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .status-dot::after{ animation:none; opacity:0; }
+  }
+
+  /* ---- image slot, hero byline ---- */
+  .avatar-frame{ position:relative; width:64px; height:64px; flex-shrink:0; }
+  .avatar-photo{
+    width:100%; height:100%;
+    border-radius:12px;
+    object-fit:cover;
+    display:block;
+    background:linear-gradient(135deg, var(--surface-2), #1a2230);
+    border:1px solid var(--border);
+  }
+  .avatar-corner{ position:absolute; width:12px; height:12px; border-color:var(--accent); pointer-events:none; }
+  .corner-tl{ top:-3px; left:-3px; border-top:2px solid; border-left:2px solid; border-top-left-radius:3px; }
+  .corner-tr{ top:-3px; right:-3px; border-top:2px solid; border-right:2px solid; border-top-right-radius:3px; }
+  .corner-bl{ bottom:-3px; left:-3px; border-bottom:2px solid; border-left:2px solid; border-bottom-left-radius:3px; }
+  .corner-br{ bottom:-3px; right:-3px; border-bottom:2px solid; border-right:2px solid; border-bottom-right-radius:3px; }
+  .status-dot.avatar-status{
+    position:absolute; bottom:-2px; right:-2px;
+    box-shadow:0 0 0 3px var(--bg);
+  }
+</style>
+</head>
+<body class="grain">
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<header class="fixed top-0 inset-x-0 z-50 nav-blur border-b hairline">
+  <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="#top" class="font-display font-semibold tracking-tight text-[15px]">
+      Jaganaraayan<span style="color:var(--accent)">.</span>M
+    </a>
+    <nav class="hidden md:flex items-center gap-8 font-mono text-[13px]" style="color:var(--muted)">
+      <a href="#flagship" class="link-underline hover:text-white">flagship</a>
+      <a href="#projects" class="link-underline hover:text-white">projects</a>
+      <a href="#experience" class="link-underline hover:text-white">experience</a>
+      <a href="#contact" class="link-underline hover:text-white">contact</a>
+    </nav>
+    <a href="#contact" class="btn-primary text-[13px] px-4 py-2 rounded-lg font-mono">Get in touch</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="top" class="pt-40 pb-24 md:pt-48 md:pb-32 relative overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-[1.1fr_0.9fr] gap-16 items-center">
+    <div class="reveal">
+      <div class="flex items-center gap-4 mb-7">
+        <div class="avatar-frame">
+          <img src="assets/Jagan.jpeg" class="avatar-photo" alt="Jaganaraayan M">
+          <span class="avatar-corner corner-tl"></span>
+          <span class="avatar-corner corner-tr"></span>
+          <span class="avatar-corner corner-bl"></span>
+          <span class="avatar-corner corner-br"></span>
+          <span class="status-dot avatar-status"></span>
+        </div>
+        <div>
+          <p class="font-display text-[15px] font-semibold leading-tight">Jaganaraayan M</p>
+          <p class="section-eyebrow mt-1" style="margin-bottom:0">AI/ML Engineer &nbsp;·&nbsp; moving into cybersecurity</p>
+        </div>
+      </div>
+      <h1 class="font-display text-[2.5rem] leading-[1.08] md:text-6xl font-semibold tracking-tight">
+        I build systems that learn to
+        <span style="color:var(--accent)">spot the threat</span>
+        before it lands.
+      </h1>
+      <p class="mt-6 text-[17px] leading-relaxed max-w-lg" style="color:var(--muted)">
+        I'm Jaganaraayan M — an AI/ML engineer applying machine learning to security problems:
+        malicious traffic, phishing, malware, and weak credentials. I like the layer where
+        detection models meet real infrastructure.
+      </p>
+      <div class="mt-9 flex flex-wrap gap-4">
+        <a href="#flagship" class="btn-primary px-6 py-3 rounded-lg text-[14px]">View My Work</a>
+        <a href="#contact" class="btn-ghost px-6 py-3 rounded-lg text-[14px] font-medium">Get in Touch</a>
+      </div>
+    </div>
+
+    <!-- signature element, compact hero version -->
+    <div class="reveal scan-window" style="transition-delay:.1s">
+      <div class="scan-titlebar">
+        <span class="dot" style="background:#FF5C5C55;border:1px solid #FF5C5C88"></span>
+        <span class="dot" style="background:#F2A93B55;border:1px solid #F2A93B88"></span>
+        <span class="dot" style="background:#5B8DEF55;border:1px solid #5B8DEF88"></span>
+        <span class="font-mono text-[11px] ml-2" style="color:var(--muted)">gateway --watch</span>
+      </div>
+      <div class="scan-body" id="heroLog"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FLAGSHIP -->
+<section id="flagship" class="py-24 md:py-32 border-t hairline" style="background:var(--surface)">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="reveal flex items-baseline justify-between flex-wrap gap-3 mb-3">
+      <p class="section-eyebrow">Flagship project</p>
+      <span class="chip" style="color:var(--amber); border-color:#F2A93B44;">● in active development</span>
+    </div>
+    <h2 class="reveal font-display text-3xl md:text-[2.6rem] font-semibold tracking-tight max-w-3xl leading-tight">
+      AI-Powered API Security Gateway for Real-Time Threat Detection
+    </h2>
+
+    <div class="grid lg:grid-cols-[1fr_1fr] gap-12 mt-14 items-start">
+      <!-- left column: big visual mockup + tech stack filling the space beneath it -->
+      <div>
+        <div class="reveal scan-window">
+          <div class="scan-titlebar">
+            <span class="dot" style="background:#FF5C5C55;border:1px solid #FF5C5C88"></span>
+            <span class="dot" style="background:#F2A93B55;border:1px solid #F2A93B88"></span>
+            <span class="dot" style="background:#5B8DEF55;border:1px solid #5B8DEF88"></span>
+            <span class="font-mono text-[11px] ml-2" style="color:var(--muted)">api-gateway / inference-log</span>
+          </div>
+          <div class="scan-body" id="flagshipLog" style="min-height:320px;"></div>
+        </div>
+
+        <div class="reveal mt-6 pt-6 border-t hairline" style="transition-delay:.04s">
+          <h3 class="font-mono text-[12px] tracking-wide uppercase mb-3" style="color:var(--muted)">Tech stack</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="chip">Python</span>
+            <span class="chip">FastAPI</span>
+            <span class="chip">scikit-learn</span>
+            <span class="chip">TensorFlow</span>
+            <span class="chip">Request middleware</span>
+            <span class="chip">REST APIs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal space-y-9" style="transition-delay:.08s">
+        <div>
+          <h3 class="font-mono text-[12px] tracking-wide uppercase mb-2" style="color:var(--muted)">The problem</h3>
+          <p class="leading-relaxed" style="color:var(--text)">
+            Signature-based API gateways catch known attack patterns but miss novel or slowly-evolving
+            abuse — credential stuffing, payload obfuscation, and anomalous request sequences that look
+            legitimate one request at a time. Most teams only notice after the damage is done.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-mono text-[12px] tracking-wide uppercase mb-2" style="color:var(--muted)">The approach</h3>
+          <p class="leading-relaxed" style="color:var(--text)">
+            A gateway service sits in front of the API, scoring every request in real time with a
+            trained classifier before it reaches the backend. Requests are logged, scored, and routed
+            as allow / flag / block — with the goal of catching threats a static rule set would miss,
+            without adding meaningful latency to legitimate traffic.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-mono text-[12px] tracking-wide uppercase mb-3" style="color:var(--muted)">Case study breakdown</h3>
+          <ul class="space-y-3">
+            <li class="flex gap-3">
+              <span class="font-mono text-[12px] mt-0.5" style="color:var(--accent)">→</span>
+              <span style="color:var(--muted)"><span style="color:var(--text)">Architecture:</span> FastAPI gateway sits in front of the protected API, intercepting and scoring every request before it's proxied through.</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-mono text-[12px] mt-0.5" style="color:var(--accent)">→</span>
+              <span style="color:var(--muted)"><span style="color:var(--text)">Detection:</span> An ML classifier trained on request patterns flags anomalies that static rules typically miss.</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-mono text-[12px] mt-0.5" style="color:var(--accent)">→</span>
+              <span style="color:var(--muted)"><span style="color:var(--text)">Status:</span> Core gateway and scoring pipeline are being built now — this section will carry real benchmark numbers once testing is complete.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECONDARY PROJECTS -->
+<section id="projects" class="py-24 md:py-32">
+  <div class="max-w-6xl mx-auto px-6">
+    <p class="reveal section-eyebrow mb-3">Other builds</p>
+    <h2 class="reveal font-display text-3xl md:text-4xl font-semibold tracking-tight mb-14">More security-focused tooling</h2>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <article class="reveal card p-7">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style="background:var(--accent-dim)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h3 class="font-display text-lg font-semibold mb-2">Password Security Analyzer</h3>
+        <p class="text-[14px] leading-relaxed mb-6" style="color:var(--muted)">
+          Evaluates password strength beyond basic rules — checking entropy, common patterns, and
+          exposure in known breach datasets to give a realistic risk read.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="chip">Python</span>
+          <span class="chip">Entropy scoring</span>
+        </div>
+        <a href="https://github.com/Jaganaraayan" target="_blank" rel="noopener" class="font-mono text-[13px] link-underline" style="color:var(--accent)">github ↗</a>
+      </article>
+
+      <article class="reveal card p-7" style="transition-delay:.06s">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style="background:#F2A93B22">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.8"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9L2.7 18.1A2 2 0 004.5 21h15a2 2 0 001.8-2.9L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
+        </div>
+        <h3 class="font-display text-lg font-semibold mb-2">AI Phishing URL Detector</h3>
+        <p class="text-[14px] leading-relaxed mb-6" style="color:var(--muted)">
+          Classifies URLs as phishing or legitimate using ML on lexical and structural features
+          — domain age, character patterns, and redirect behavior — instead of blocklists alone.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="chip">Python</span>
+          <span class="chip">scikit-learn</span>
+        </div>
+        <a href="https://github.com/Jaganaraayan" target="_blank" rel="noopener" class="font-mono text-[13px] link-underline" style="color:var(--accent)">github ↗</a>
+      </article>
+
+      <article class="reveal card p-7" style="transition-delay:.12s">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-6" style="background:#FF5C5C22">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        </div>
+        <h3 class="font-display text-lg font-semibold mb-2">File Malware Detector</h3>
+        <p class="text-[14px] leading-relaxed mb-6" style="color:var(--muted)">
+          Inspects uploaded files for malicious signatures and suspicious characteristics, flagging
+          risky files before they're allowed to run or spread further.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="chip">Python</span>
+          <span class="chip">File analysis</span>
+        </div>
+        <a href="https://github.com/Jaganaraayan" target="_blank" rel="noopener" class="font-mono text-[13px] link-underline" style="color:var(--accent)">github ↗</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="py-24 md:py-32 border-t hairline" style="background:var(--surface)">
+  <div class="max-w-6xl mx-auto px-6">
+    <p class="reveal section-eyebrow mb-3">Experience</p>
+    <h2 class="reveal font-display text-3xl md:text-4xl font-semibold tracking-tight mb-14">Where this was built</h2>
+
+    <div class="space-y-10 max-w-3xl">
+      <div class="reveal border-l pl-7" style="border-color:var(--border)">
+        <p class="font-mono text-[12px] mb-1" style="color:var(--accent)">CYBERSECURITY INTERN</p>
+        <h3 class="font-display text-xl font-semibold">Jyesta Corporate Entity</h3>
+        <p class="mt-3 leading-relaxed" style="color:var(--muted)">
+          Worked hands-on with core cybersecurity practices, getting exposure to how threats are
+          identified and handled in a real corporate environment — the practical grounding that
+          shaped the direction of the AI-powered security work that followed.
+        </p>
+      </div>
+
+      <div class="reveal border-l pl-7" style="border-color:var(--border); transition-delay:.08s">
+        <p class="font-mono text-[12px] mb-1" style="color:var(--accent)">WEB DEVELOPER INTERN</p>
+        <h3 class="font-display text-xl font-semibold">Vaizai Solutions</h3>
+        <p class="mt-3 leading-relaxed" style="color:var(--muted)">
+          Built and maintained web-facing features as part of a development team, developing the
+          practical engineering habits — clean structure, real deadlines, working in someone else's
+          codebase — that now carry into building production-shaped security tools.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / FOOTER -->
+<footer id="contact" class="py-24 md:py-32">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="reveal max-w-xl">
+      <p class="section-eyebrow mb-3">// contact</p>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold tracking-tight mb-5">Let's establish a connection.</h2>
+
+      <div class="flex items-center gap-2.5 mb-6">
+        <span class="status-dot"></span>
+        <span class="font-mono text-[12.5px]" style="color:var(--accent)">status: open to opportunities</span>
+      </div>
+
+      <p class="leading-relaxed mb-9" style="color:var(--muted)">
+        No contact forms, no gatekeeping — just a direct line. Reach out about AI/ML roles,
+        security work, or anything in between.
+      </p>
+      <a href="mailto:jaganaraayan.m.jn@gmail.com" class="btn-primary inline-block px-6 py-3 rounded-lg text-[14px] font-mono">
+        → jaganaraayan.m.jn@gmail.com
+      </a>
+    </div>
+
+    <div class="reveal mt-16 pt-8 border-t hairline flex flex-col md:flex-row items-start md:items-center justify-between gap-6" style="transition-delay:.06s">
+      <div class="flex gap-6 font-mono text-[13px]" style="color:var(--muted)">
+        <a href="https://github.com/Jaganaraayan" target="_blank" rel="noopener" class="link-underline hover:text-white">GitHub ↗</a>
+        <a href="https://www.linkedin.com/in/jaganaraayan-manikandan-773291350/" target="_blank" rel="noopener" class="link-underline hover:text-white">LinkedIn ↗</a>
+      </div>
+      <p class="font-mono text-[12px]" style="color:var(--muted)">// © 2026 Jaganaraayan M — built line by line</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // --- signature scan-log animation, driven from one shared script ---
+  const lines = [
+    { tag: '[OK]',    cls: 'tag-ok',    text: 'POST /api/v1/users        · 200  · 11ms' },
+    { tag: '[OK]',    cls: 'tag-ok',    text: 'GET  /api/v1/orders/8841  · 200  ·  9ms' },
+    { tag: '[WATCH]', cls: 'tag-watch', text: 'POST /api/v1/login        · anomaly score 0.71' },
+    { tag: '[BLOCK]', cls: 'tag-block', text: 'POST /api/v1/login        · credential-stuffing pattern' },
+    { tag: '[OK]',    cls: 'tag-ok',    text: 'GET  /api/v1/products     · 200  ·  8ms' },
+    { tag: '[BLOCK]', cls: 'tag-block', text: 'GET  /api/v1/export?id=.. · payload obfuscation detected' },
+    { tag: '[OK]',    cls: 'tag-ok',    text: 'PUT  /api/v1/cart/4       · 200  · 14ms' },
+    { tag: '[WATCH]', cls: 'tag-watch', text: 'POST /api/v1/reset        · unusual request sequence' },
+  ];
+
+  function renderLog(elId, count, withCaret){
+    const el = document.getElementById(elId);
+    if(!el) return;
+    el.innerHTML = '';
+    const shuffled = [...lines].sort(() => Math.random() - 0.5).slice(0, count);
+    shuffled.forEach((l, i) => {
+      const row = document.createElement('div');
+      row.className = 'scan-line';
+      row.style.animationDelay = (i * 0.12) + 's';
+      row.innerHTML = `<span class="${l.cls}">${l.tag}</span><span style="color:var(--muted)">${l.text}</span>`;
+      el.appendChild(row);
+    });
+    if(withCaret){
+      const caretRow = document.createElement('div');
+      caretRow.className = 'scan-line';
+      caretRow.style.animationDelay = (shuffled.length * 0.12) + 's';
+      caretRow.innerHTML = `<span class="caret"></span>`;
+      el.appendChild(caretRow);
+    }
+  }
+
+  renderLog('heroLog', 6, true);
+  renderLog('flagshipLog', 8, true);
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduceMotion){
+    setInterval(() => renderLog('heroLog', 6, true), 6000);
+    setInterval(() => renderLog('flagshipLog', 8, true), 7000);
+  }
+
+  // --- scroll reveal ---
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+
+  // --- custom circular cursor ---
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
+  if(!isTouch && dot && ring){
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.left = mouseX + 'px';
+      dot.style.top = mouseY + 'px';
+    });
+
+    function animateRing(){
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      ring.style.left = ringX + 'px';
+      ring.style.top = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    const interactive = document.querySelectorAll('a, button, [tabindex]');
+    interactive.forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('is-active'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('is-active'));
+    });
+
+    document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+    document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+  }
+</script>
+
+</body>
+</html>
